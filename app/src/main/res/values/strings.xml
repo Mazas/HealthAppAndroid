@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">HeartMonitor</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="signup">Sign Up</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="home">Home</string>
 </resources>
