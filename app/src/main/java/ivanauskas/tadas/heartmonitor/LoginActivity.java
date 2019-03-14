@@ -71,27 +71,28 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void signUp(){
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("Sign Up", "createUserWithEmail:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("user",user);
-                            startActivity(intent);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("Sign Up", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//        String email = mEmailView.getText().toString();
+//        String password = mPasswordView.getText().toString();
+//        auth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d("Sign Up", "createUserWithEmail:success");
+//                            FirebaseUser user = auth.getCurrentUser();
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            intent.putExtra("user",user);
+//                            startActivity(intent);
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w("Sign Up", "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+        startActivity(new Intent(this, RegistrationActivity.class));
     }
 
     private void attemptLogin() {
