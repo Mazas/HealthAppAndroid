@@ -27,6 +27,7 @@
         android:id="@+id/register_password"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_password"
+        android:autofillHints="@string/prompt_password"
         android:inputType="textPassword"/>
     <EditText
         android:layout_width="match_parent"
@@ -34,20 +35,25 @@
         android:layout_height="wrap_content"
         android:id="@+id/register_password_repeat"
         android:hint="@string/prompt_password_repeat"
+        android:autofillHints="@string/prompt_password_repeat"
         android:inputType="textPassword"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:id="@+id/register_name"
         android:layout_height="wrap_content"
-        android:hint="@string/name" />
+        android:inputType="textAutoComplete"
+        android:hint="@string/name"
+        android:autofillHints="@string/name" />
+
 
     <NumberPicker
         android:id="@+id/register_gender"
         android:layout_width="match_parent"
         android:layout_height="94dp"
         android:layout_marginTop="10dp"
-        android:hint="@string/gender" />
+        android:hint="@string/gender"
+        android:autofillHints="@string/gender" />
 
     <DatePicker
         android:id="@+id/register_date_of_birth"
@@ -59,7 +65,7 @@
 
         android:datePickerMode="spinner"
         android:hint="@string/date_of_birth"
-
+        android:autofillHints="@string/date_of_birth"
         android:inputType="date" />
 
     <Button

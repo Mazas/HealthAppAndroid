@@ -13,6 +13,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import ivanauskas.tadas.heartmonitor.Model.HttpHandler;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -39,17 +40,21 @@ public class RegistrationActivity extends AppCompatActivity {
         gender.setMaxValue(1);
         gender.setDisplayedValues(genders);
         gender.setValue(0);
+        dateOfBirth.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
 
+        dateOfBirth.setMaxDate(System.currentTimeMillis());
+        dateOfBirth.init(2000,6,6,null);
     }
 
-    public void register(View view){
+    public void register(View view) {
         readValues();
-        validate();
-        createJsonObject();
 
-        new HttpHandler().requestCreateUser(userObject);
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
+        if (validate()) {
+            createJsonObject();
+            new HttpHandler().requestCreateUser(userObject);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void readValues(){
@@ -57,7 +62,17 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordText = password.getText().toString();
         nameText = name.getText().toString();
         genderText = gender.getDisplayedValues()[gender.getValue()];
-        dobText = dateOfBirth.getYear()+"-"+dateOfBirth.getMonth()+"-"+dateOfBirth.getDayOfMonth();
+        dobText = String.valueOf(dateOfBirth.getYear());
+        if (dateOfBirth.getMonth()<10) {
+            dobText = dobText + "-0" + dateOfBirth.getMonth();
+        }else {
+            dobText = dobText+"-"+dateOfBirth.getMonth();
+        }
+        if (dateOfBirth.getDayOfMonth()<10){
+            dobText = dobText+"-0"+dateOfBirth.getDayOfMonth();
+        }else {
+            dobText = dobText+"-"+dateOfBirth.getDayOfMonth();
+        }
     }
 
     private boolean validate(){

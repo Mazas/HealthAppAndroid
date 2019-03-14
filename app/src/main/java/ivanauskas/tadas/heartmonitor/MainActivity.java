@@ -1,6 +1,8 @@
 package ivanauskas.tadas.heartmonitor;
 
+import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
     private DrawerLayout drawerLayout;
+    private LinearLayout container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        container = findViewById(R.id.content_frame);
+
+        Fragment homeFragment = new HomeFragment();
+        getFragmentManager().beginTransaction()
+                .replace(container.getId(), homeFragment)
+                .addToBackStack(null)
+                .commit();
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -31,12 +44,21 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         switch (item.getItemId()){
                             case R.id.nav_home:
-                                // TODO home
-                                Toast.makeText(MainActivity.this,"Not yet implemented", Toast.LENGTH_SHORT).show();
+
+                                Fragment homeFragment = new HomeFragment();
+                                getFragmentManager().beginTransaction()
+                                        .replace(container.getId(), homeFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+
                                 return true;
                             case R.id.nav_settings:
-                                // TODO settings page
-                                Toast.makeText(MainActivity.this,"Not yet implemented", Toast.LENGTH_SHORT).show();
+
+                                Fragment settingsPage = new SettingsPage();
+                                getFragmentManager().beginTransaction()
+                                        .replace(container.getId(), settingsPage)
+                                        .addToBackStack(null)
+                                        .commit();
                                 return true;
                             case R.id.nav_logout:
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -50,10 +72,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
+        try {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -64,5 +89,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
