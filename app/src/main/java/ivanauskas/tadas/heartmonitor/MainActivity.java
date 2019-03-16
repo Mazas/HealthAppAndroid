@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import ivanauskas.tadas.heartmonitor.Model.BackgroundService;
+
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
     private DrawerLayout drawerLayout;
     private LinearLayout container;
@@ -34,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 .replace(container.getId(), homeFragment)
                 .addToBackStack(null)
                 .commit();
+
+        // start service
+        Intent serviceIntent = new Intent(this, BackgroundService.class);
+        startService(serviceIntent);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -74,8 +80,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         try {
             ActionBar actionbar = getSupportActionBar();
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            if (actionbar != null) {
+                actionbar.setDisplayHomeAsUpEnabled(true);
+            }
+            if (actionbar != null) {
+                actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            }
         }catch (NullPointerException e){
             e.printStackTrace();
         }
