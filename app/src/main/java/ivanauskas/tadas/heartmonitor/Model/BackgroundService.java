@@ -2,7 +2,6 @@ package ivanauskas.tadas.heartmonitor.Model;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.hardware.SensorEvent;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,6 +13,7 @@ public class BackgroundService extends IntentService implements MovementDetector
     private static final String RUN = "ivanauskas.tadas.heartmonitor.Model.action.RUN";
     private float motion = 0;
     private boolean running = false;
+    private MovementDetector movementDetector;
 
 
 
@@ -24,7 +24,10 @@ public class BackgroundService extends IntentService implements MovementDetector
     @Override
     public void onStart(@Nullable Intent intent, int startId) {
         super.onStart(intent, startId);
+        movementDetector = new MovementDetector(getBaseContext());
+        movementDetector.addListener(this);
         running = true;
+        movementDetector.start();
         new Thread() {
             @Override
             public void run() {
@@ -36,14 +39,10 @@ public class BackgroundService extends IntentService implements MovementDetector
                         e.printStackTrace();
                     }
                 }
+                movementDetector.stop();
             }
         }.start();
 
-    }
-
-    @Override
-    public void onMotionDetected(SensorEvent event, float acceleration) {
-        motion = acceleration;
     }
 
     @Override
@@ -52,7 +51,13 @@ public class BackgroundService extends IntentService implements MovementDetector
     }
 
     private void sendData(){
-        Log.e("BackgroundService", "HELLO!");
+        Log.e("BackgroundService", "motion: "+motion);
         // TODO send data
+    }
+
+
+    @Override
+    public void onMotionDetected(SensorEvent event, float acceleration) {
+        motion = acceleration;
     }
 }

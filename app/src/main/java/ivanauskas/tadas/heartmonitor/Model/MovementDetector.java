@@ -14,14 +14,15 @@ public class MovementDetector implements SensorEventListener {
     private SensorManager sensorMan;
     private Sensor accelerometer;
 
-    private MovementDetector(Context context) {
+    public MovementDetector(Context context) {
         try {
             sensorMan = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-            accelerometer = sensorMan != null ? sensorMan.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) : null;
-        }catch (NullPointerException e){
-            Log.e("MovementDetector",e.getMessage());
+            accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        } catch (NullPointerException e) {
+            Log.e("MovementDetector", e.getMessage());
         }
     }
+
     private HashSet<Listener> mListeners = new HashSet<MovementDetector.Listener>();
 
     public void start() {
@@ -45,11 +46,10 @@ public class MovementDetector implements SensorEventListener {
             float z = event.values[2];
 
             float diff = (float) Math.sqrt(x * x + y * y + z * z);
-            if (diff > 0.5)
-                Log.d("MovementDetector","Device motion detected!!!!");
             for (Listener listener : mListeners) {
                 listener.onMotionDetected(event, diff);
             }
+
         }
     }
 
