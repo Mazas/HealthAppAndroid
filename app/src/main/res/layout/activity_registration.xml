@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegistrationActivity">
+
+
+    <EditText
+        android:id="@+id/register_email"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/prompt_email"
+        android:hint="@string/prompt_email"
+        android:imeActionId="6"
+        android:imeActionLabel="@string/action_sign_in"
+        android:imeOptions="actionUnspecified"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:singleLine="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/register_password"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_password_repeat"
+        android:hint="@string/prompt_password_repeat"
+        android:inputType="textPassword"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/register_name"
+        android:layout_height="wrap_content"
+        android:hint="@string/name" />
+
+    <NumberPicker
+        android:id="@+id/register_gender"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/gender" />
+
+    <DatePicker
+        android:id="@+id/register_date_of_birth"
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+        android:layout_marginTop="10dp"
+        android:calendarViewShown="false"
+
+
+        android:datePickerMode="spinner"
+        android:hint="@string/date_of_birth"
+
+        android:inputType="date" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/signup"
+        android:onClick="register"/>
+
+</LinearLayout>
