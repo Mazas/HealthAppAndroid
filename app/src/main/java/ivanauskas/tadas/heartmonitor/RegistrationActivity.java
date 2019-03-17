@@ -1,6 +1,7 @@
 package ivanauskas.tadas.heartmonitor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +54,12 @@ public class RegistrationActivity extends AppCompatActivity {
             createJsonObject();
             new HttpHandler().requestCreateUser(userObject);
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+            SharedPreferences sharedPref = getSharedPreferences("settings",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("email", emailText);
+            editor.commit();
+
             startActivity(intent);
         }
     }

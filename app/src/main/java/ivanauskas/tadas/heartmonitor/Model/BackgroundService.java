@@ -14,16 +14,20 @@ public class BackgroundService extends IntentService implements MovementDetector
     private float motion = 0;
     private boolean running = false;
     private MovementDetector movementDetector;
+    private FirestoreConnector connector;
+    private HeartrateMonitor heartrateMonitor;
 
 
 
     public BackgroundService() {
         super("BackgroundService");
+        heartrateMonitor = new HeartrateMonitor();
     }
 
     @Override
     public void onStart(@Nullable Intent intent, int startId) {
         super.onStart(intent, startId);
+        connector = new FirestoreConnector(getSharedPreferences("settings",MODE_PRIVATE).getString("email",null));
         movementDetector = new MovementDetector(getBaseContext());
         movementDetector.addListener(this);
         running = true;
@@ -52,7 +56,7 @@ public class BackgroundService extends IntentService implements MovementDetector
 
     private void sendData(){
         Log.e("BackgroundService", "motion: "+motion);
-        // TODO send data
+        connector.update(motion,heartrateMonitor.getHeartRate());
     }
 
 
