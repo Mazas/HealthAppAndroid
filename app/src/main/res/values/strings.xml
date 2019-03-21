@@ -13,4 +13,6 @@
     <string name="name">Name</string>
     <string name="gender">Gender</string>
     <string name="date_of_birth">Date of birth</string>
+    <string name="settings_update">Update</string>
+    <string name="BPM">BPM</string>
 </resources>

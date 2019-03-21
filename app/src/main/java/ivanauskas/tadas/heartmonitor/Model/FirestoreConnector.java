@@ -33,5 +33,11 @@ public class FirestoreConnector {
         db.collection(path).document(state).set(data, SetOptions.merge());
     }
 
+    public void updateUser(String userID, HashMap data){
+        String path = "users/"+userID;
+        db.collection("users").document(userID).set(data, SetOptions.merge());
+
+    }
+
 
 }

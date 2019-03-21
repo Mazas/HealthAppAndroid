@@ -98,11 +98,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private void createJsonObject(){
         try {
             userObject = new JSONObject();
-            userObject.put("email", emailText);
             userObject.put("name",nameText);
+            userObject.put("email", emailText);
             userObject.put("password",passwordText);
-            userObject.put("gender",genderText);
             userObject.put("date_of_birth",dobText);
+            userObject.put("gender",genderText);
             // yyyy-mm-dd - date format
         }catch (JSONException ex){
             Log.d("JSON",ex.getMessage());
