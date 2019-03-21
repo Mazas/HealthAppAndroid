@@ -28,15 +28,12 @@ public class HttpHandler {
         protected Void doInBackground(JSONObject... jsonObjects) {
 
             try {
-
-                // TODO CHANGE URL
                 // send post request
-                URL url = new URL("https://europe-west1-smarthome-3c6b9.cloudfunctions.net/users/");
+                URL url = new URL("https://europe-west1-cloudproject-f25f2.cloudfunctions.net/register/");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
 
                 connection.setRequestProperty("Content-type", "application/json");
-                connection.setRequestProperty("Accept", "application/json");
                 connection.setDoOutput(true);
 
                 DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());

@@ -1,7 +1,10 @@
 package ivanauskas.tadas.heartmonitor;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,7 +18,13 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
+
 import ivanauskas.tadas.heartmonitor.Model.BackgroundService;
+import ivanauskas.tadas.heartmonitor.Model.FirestoreConnector;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
     private DrawerLayout drawerLayout;
@@ -103,7 +112,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(String action, HashMap data) {
+        String user = getIntent().getStringExtra("user");
+        FirestoreConnector connector = new FirestoreConnector((String)data.get("email"));
+        connector.updateUser(user,data);
 
     }
 }
