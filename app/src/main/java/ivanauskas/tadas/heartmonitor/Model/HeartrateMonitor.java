@@ -1,23 +1,64 @@
 package ivanauskas.tadas.heartmonitor.Model;
 
 
-import java.util.Random;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.util.Log;
 
-public class HeartrateMonitor {
+import java.util.HashSet;
 
-    private Random rng;
+import static android.content.Context.SENSOR_SERVICE;
 
-    public HeartrateMonitor(){
-        rng = new Random();
+public class HeartrateMonitor implements SensorEventListener {
+
+    private Sensor mHeartRateSensor;
+    private SensorManager mSensorManager;
+
+
+    public HeartrateMonitor(Context context) {
+        try {
+            mSensorManager = ((SensorManager) context.getSystemService(SENSOR_SERVICE));
+            mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_BEAT);
+        } catch (NullPointerException e) {
+            Log.e("HeartRateMonitor", e.getMessage());
+        }
+
+    }
+
+    private HashSet<HeartListener> mListeners = new HashSet<>();
+
+    public void start() {
+        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void stop() {
+        mSensorManager.unregisterListener(this);
+    }
+
+    public void addListener(HeartListener listener) {
+        mListeners.add(listener);
     }
 
 
-    /**
-     * TODO update this class
-     * now it returns random number
-     * */
-    public double getHeartRate(){
-        double rate = 80+rng.nextInt(120);
-        return rate;
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_HEART_BEAT) {
+            for (HeartListener listener : mListeners) {
+                listener.heartBeat(event, event.values[0]);
+            }
+
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    public interface HeartListener {
+        void heartBeat(SensorEvent event, double rate);
     }
 }

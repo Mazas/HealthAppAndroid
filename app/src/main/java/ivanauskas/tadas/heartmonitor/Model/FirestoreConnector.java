@@ -27,9 +27,9 @@ public class FirestoreConnector {
         String timeStamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
         data.put(timeStamp,rate);
 
-        String state = movement>5? "moving":"idle";
+        String state = movement>3? "moving":"idle";
 
-        String path = "data/"+email+"/"+new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String path = "data/"+email+"/"+new SimpleDateFormat("yyyy-MM-dd:HH").format(new Date());
         db.collection(path).document(state).set(data, SetOptions.merge());
     }
 
@@ -38,6 +38,8 @@ public class FirestoreConnector {
         db.collection("users").document(userID).set(data, SetOptions.merge());
 
     }
+
+    // data/email/yyyy-MM-dd:hh
 
 
 }

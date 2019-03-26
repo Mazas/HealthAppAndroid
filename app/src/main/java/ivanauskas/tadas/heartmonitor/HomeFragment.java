@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-// TODO implement home page
 
 
 public class HomeFragment extends Fragment implements BroadcastListener{
@@ -35,7 +34,7 @@ public class HomeFragment extends Fragment implements BroadcastListener{
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         rate = view.findViewById(R.id.beatRate);
-
+        this.rate.setText(String.format("%s %s", String.valueOf(0.0), getString(R.string.BPM)));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new HeartRateBroadcastReceiver(this),new IntentFilter("intent_filter"));
         return view;
     }

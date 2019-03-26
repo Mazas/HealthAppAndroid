@@ -17,10 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.HashMap;
 
 import ivanauskas.tadas.heartmonitor.Model.BackgroundService;

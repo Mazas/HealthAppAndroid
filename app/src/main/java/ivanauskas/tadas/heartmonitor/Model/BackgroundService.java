@@ -7,15 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import ivanauskas.tadas.heartmonitor.HomeFragment;
 
-
-public class BackgroundService extends IntentService implements MovementDetector.Listener{
-    private static final String START = "ivanauskas.tadas.heartmonitor.Model.action.START";
-    private static final String STOP = "ivanauskas.tadas.heartmonitor.Model.action.STOP";
-    private static final String RUN = "ivanauskas.tadas.heartmonitor.Model.action.RUN";
+public class BackgroundService extends IntentService implements MovementDetector.Listener,HeartrateMonitor.HeartListener{
     private float motion = 0;
     private boolean running = false;
+    private double heartRate = 0;
     private MovementDetector movementDetector;
     private FirestoreConnector connector;
     private HeartrateMonitor heartrateMonitor;
@@ -24,7 +20,6 @@ public class BackgroundService extends IntentService implements MovementDetector
 
     public BackgroundService() {
         super("BackgroundService");
-        heartrateMonitor = new HeartrateMonitor();
     }
 
     @Override
@@ -32,9 +27,12 @@ public class BackgroundService extends IntentService implements MovementDetector
         super.onStart(intent, startId);
         connector = new FirestoreConnector(getSharedPreferences("settings",MODE_PRIVATE).getString("email",null));
         movementDetector = new MovementDetector(getBaseContext());
+        heartrateMonitor = new HeartrateMonitor(getBaseContext());
         movementDetector.addListener(this);
+        heartrateMonitor.addListener(this);
         running = true;
         movementDetector.start();
+        heartrateMonitor.start();
         new Thread() {
             @Override
             public void run() {
@@ -47,6 +45,7 @@ public class BackgroundService extends IntentService implements MovementDetector
                     }
                 }
                 movementDetector.stop();
+                heartrateMonitor.stop();
             }
         }.start();
     }
@@ -58,20 +57,24 @@ public class BackgroundService extends IntentService implements MovementDetector
 
     private void sendData(){
         Log.e("BackgroundService", "motion: "+motion);
-        double rate = heartrateMonitor.getHeartRate();
 
         Intent intent = new Intent("intent_filter");
-        intent.putExtra("rate",String.valueOf(rate));
+        intent.putExtra("rate",String.valueOf(heartRate));
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         localBroadcastManager.sendBroadcast(intent);
 
 
-        connector.update(motion,rate);
+        connector.update(motion,heartRate);
     }
 
 
     @Override
     public void onMotionDetected(SensorEvent event, float acceleration) {
         motion = acceleration;
+    }
+
+    @Override
+    public void heartBeat(SensorEvent event, double rate) {
+        heartRate = rate;
     }
 }
