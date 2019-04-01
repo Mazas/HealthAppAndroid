@@ -12,6 +12,7 @@ import java.util.HashSet;
 
 import static android.content.Context.SENSOR_SERVICE;
 
+@Deprecated
 public class HeartrateMonitor implements SensorEventListener {
 
     private Sensor mHeartRateSensor;
@@ -23,7 +24,7 @@ public class HeartrateMonitor implements SensorEventListener {
             mSensorManager = ((SensorManager) context.getSystemService(SENSOR_SERVICE));
             mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_BEAT);
         } catch (NullPointerException e) {
-            Log.e("HeartRateMonitor", e.getMessage());
+            Log.e("HeartrateMonitor", e.getMessage());
         }
 
     }
@@ -47,7 +48,7 @@ public class HeartrateMonitor implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_BEAT) {
             for (HeartListener listener : mListeners) {
-                listener.heartBeat(event, event.values[0]);
+                listener.heartBeat(event.values[0]);
             }
 
         }
@@ -59,6 +60,6 @@ public class HeartrateMonitor implements SensorEventListener {
     }
 
     public interface HeartListener {
-        void heartBeat(SensorEvent event, double rate);
+        void heartBeat(double rate);
     }
 }

@@ -1,11 +1,7 @@
 package ivanauskas.tadas.heartmonitor;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +21,7 @@ import ivanauskas.tadas.heartmonitor.Model.FirestoreConnector;
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
     private DrawerLayout drawerLayout;
     private LinearLayout container;
+    private Fragment homeFragment, settingsPage;
 
 
     @Override
@@ -37,7 +34,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         container = findViewById(R.id.content_frame);
 
-        Fragment homeFragment = new HomeFragment();
+        homeFragment = new HomeFragment();
+        settingsPage = new SettingsPage();
         getFragmentManager().beginTransaction()
                 .replace(container.getId(), homeFragment)
                 .addToBackStack(null)
@@ -57,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         switch (item.getItemId()){
                             case R.id.nav_home:
 
-                                Fragment homeFragment = new HomeFragment();
                                 getFragmentManager().beginTransaction()
                                         .replace(container.getId(), homeFragment)
                                         .addToBackStack(null)
@@ -66,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                                 return true;
                             case R.id.nav_settings:
 
-                                Fragment settingsPage = new SettingsPage();
                                 getFragmentManager().beginTransaction()
                                         .replace(container.getId(), settingsPage)
                                         .addToBackStack(null)

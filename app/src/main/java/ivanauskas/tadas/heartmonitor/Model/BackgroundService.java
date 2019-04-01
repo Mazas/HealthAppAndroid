@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import ivanauskas.tadas.heartmonitor.HomeFragment;
+
 
 public class BackgroundService extends IntentService implements MovementDetector.Listener,HeartrateMonitor.HeartListener{
     private float motion = 0;
@@ -14,7 +16,6 @@ public class BackgroundService extends IntentService implements MovementDetector
     private double heartRate = 0;
     private MovementDetector movementDetector;
     private FirestoreConnector connector;
-    private HeartrateMonitor heartrateMonitor;
 
 
 
@@ -27,27 +28,24 @@ public class BackgroundService extends IntentService implements MovementDetector
         super.onStart(intent, startId);
         connector = new FirestoreConnector(getSharedPreferences("settings",MODE_PRIVATE).getString("email",null));
         movementDetector = new MovementDetector(getBaseContext());
-        heartrateMonitor = new HeartrateMonitor(getBaseContext());
         movementDetector.addListener(this);
-        heartrateMonitor.addListener(this);
+        HomeFragment.attachListener(this);
         running = true;
         movementDetector.start();
-        heartrateMonitor.start();
-        new Thread() {
-            @Override
-            public void run() {
-                while (running) {
-                    try {
-                        sendData();
-                        Thread.sleep(10000);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-                movementDetector.stop();
-                heartrateMonitor.stop();
-            }
-        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                while (running) {
+//                    try {
+//                        sendData();
+//                        Thread.sleep(10000);
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//                movementDetector.stop();
+//            }
+//        }.start();
     }
 
     @Override
@@ -74,7 +72,8 @@ public class BackgroundService extends IntentService implements MovementDetector
     }
 
     @Override
-    public void heartBeat(SensorEvent event, double rate) {
+    public void heartBeat(double rate) {
         heartRate = rate;
+        sendData();
     }
 }
