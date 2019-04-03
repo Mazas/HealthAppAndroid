@@ -13,7 +13,6 @@ import java.util.Map;
 public class FirestoreConnector {
     private FirebaseFirestore db;
     private Map<String, Object> data;
-
     private String email;
 
 
@@ -24,20 +23,21 @@ public class FirestoreConnector {
 
     public void update(float movement, double rate){
         data= new HashMap<>();
-        String timeStamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
+        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         data.put(timeStamp,rate);
 
-        String state = movement>5? "moving":"idle";
+        String state = movement>3? "moving":"idle";
 
-        String path = "data/"+email+"/"+new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String path = "data/"+email+"/"+new SimpleDateFormat("yyyy-MM-dd:HH").format(new Date());
         db.collection(path).document(state).set(data, SetOptions.merge());
     }
 
     public void updateUser(String userID, HashMap data){
-        String path = "users/"+userID;
         db.collection("users").document(userID).set(data, SetOptions.merge());
 
     }
+
+    // data/email/yyyy-MM-dd:hh
 
 
 }
