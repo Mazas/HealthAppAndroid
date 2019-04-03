@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">HeartMonitor</string>
-    <string name="title_activity_login">Sign in</string>
-    <!-- Strings related to login -->
+    <string name="app_name">Heart Monitor</string>
+    <string name="title_activity_login">Heart Monitor</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_repeat">Password (Repeat)</string>

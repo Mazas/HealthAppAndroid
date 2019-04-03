@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -93,6 +94,7 @@ public class HomeFragment extends Fragment implements BroadcastListener{
         previewHolder.addCallback(surfaceCallback);
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
+
         rate.setText(String.format("%s %s", String.valueOf(0.0), getString(R.string.BPM)));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new HeartRateBroadcastReceiver(this),new IntentFilter("intent_filter"));
         return view;
@@ -127,15 +129,18 @@ public class HomeFragment extends Fragment implements BroadcastListener{
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         wakeLock.release();
-
         camera.setPreviewCallback(null);
         camera.stopPreview();
         camera.release();
         camera = null;
-
     }
 
     @Override
@@ -147,7 +152,7 @@ public class HomeFragment extends Fragment implements BroadcastListener{
 
     @Override
     public void handleBroadcast(HashMap data) {
-        this.rate.setText(String.format("%s %s", String.valueOf(data.get("rate")), getString(R.string.BPM)));
+        rate.setText(String.format("%s %s", String.valueOf(data.get("rate")), getString(R.string.BPM)));
     }
 
 
@@ -165,6 +170,7 @@ public class HomeFragment extends Fragment implements BroadcastListener{
         public void onPreviewFrame(byte[] data, Camera cam) {
             try {
                 if (data == null) throw new NullPointerException();
+                if (cam.getParameters()==null){return;}
                 Camera.Size size = cam.getParameters().getPreviewSize();
                 if (size == null) throw new NullPointerException();
 
@@ -172,6 +178,9 @@ public class HomeFragment extends Fragment implements BroadcastListener{
 
                 int width = size.width;
                 int height = size.height;
+
+                rate.setTextColor(rate.getContext().getResources().getColor(R.color.redText));
+
 
                 int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), width,height);
                 //Log.i(TAG, "imgAvg=" + imgAvg);
@@ -195,6 +204,7 @@ public class HomeFragment extends Fragment implements BroadcastListener{
                     newType = TYPE.RED;
                     if (newType != currentType) {
                         beats++;
+                        rate.setTextColor(rate.getContext().getResources().getColor(R.color.greenText));
                         Log.d(TAG, "BEAT!! beats=" + beats);
                     }
                 } else if (imgAvg > rollingAverage) {
@@ -245,15 +255,11 @@ public class HomeFragment extends Fragment implements BroadcastListener{
                 processing.set(false);
             }catch (Exception e){
                 e.printStackTrace();
-                Snackbar.make(rate.getRootView(),e.getMessage(),Snackbar.LENGTH_LONG).show();
             }
         }
     };
     private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             try {
@@ -264,9 +270,6 @@ public class HomeFragment extends Fragment implements BroadcastListener{
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             Camera.Parameters parameters = camera.getParameters();
@@ -280,9 +283,6 @@ public class HomeFragment extends Fragment implements BroadcastListener{
             camera.startPreview();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
             // Ignore
@@ -298,12 +298,10 @@ public class HomeFragment extends Fragment implements BroadcastListener{
                 } else {
                     int resultArea = result.width * result.height;
                     int newArea = size.width * size.height;
-
                     if (newArea < resultArea) result = size;
                 }
             }
         }
-
         return result;
     }
 }

@@ -1,28 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/layout">
-    <LinearLayout android:id="@+id/top"
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp">
-        <TextView android:id="@+id/beatRate"
-            android:textSize="32sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-        </RelativeLayout>
+        app:layout_constraintBottom_toTopOf="@+id/preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/beatRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="36sp"></TextView>
     </LinearLayout>
-    <SurfaceView android:id="@+id/preview"
-        android:layout_weight="1"
+
+    <SurfaceView
+        android:id="@+id/preview"
         android:layout_width="fill_parent"
-        android:layout_height="0dp">
-    </SurfaceView>
-</LinearLayout>
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top"></SurfaceView>
+</android.support.constraint.ConstraintLayout>
